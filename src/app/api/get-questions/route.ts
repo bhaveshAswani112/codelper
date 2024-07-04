@@ -17,12 +17,13 @@ export async function GET() {
                 status : 403
             })
         }
+        // console.log(session.user)
         const questions = await prisma.question.findMany({
             where : {
                 userId : user.id
             }
         })
-
+        console.log(questions)
         return Response.json({
             message : "All questions fetched successfully",
             success : true,

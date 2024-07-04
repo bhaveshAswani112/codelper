@@ -16,18 +16,14 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
+import {signIn} from "next-auth/react"
 import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  username: z.string().min(4, {
-    message: "Username must be at least 5 characters.",
-  }),
   email: z.string().email({
     message: "Email is required.",
   }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
+  password: z.string().min(1,"Password is required")
 });
 
 export default function Page() {
@@ -37,7 +33,6 @@ export default function Page() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
       email: "",
       password: "",
     },
@@ -46,21 +41,29 @@ export default function Page() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
-      const response = await axios.post("/api/sign-up", {
-        username: data.username,
-        email: data.email,
-        password: data.password,
-      });
+      const response = await signIn('credentials' , {
+        redirect : false,
+        email : data.email,
+        password : data.password
+      })
+      if (response?.error) {
+        toast({
+          title: "Failed",
+          description: response.error,
+          variant: "destructive"
+        })
+        return
+      }
       toast({
         title: "Success",
-        description: response.data.message,
+        description: "Sign in Success",
       });
-      router.push("/sign-in")
+      router.push("/")
     } catch (error: any) {
       console.error(error);
       toast({
         title: "Failed",
-        description: error.response?.data?.message || "Sign up failed",
+        description: error.response?.data?.message || "Sign in failed",
         variant : "destructive"
       });
     } finally {
@@ -72,19 +75,6 @@ export default function Page() {
     <div className="max-w-md mx-auto mt-10">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field, fieldState }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="Enter your name" {...field} />
-                </FormControl>
-                <FormMessage>{fieldState.error?.message}</FormMessage>
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="email"
