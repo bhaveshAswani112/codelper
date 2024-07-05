@@ -14,26 +14,21 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import axios from "axios";
 
 const formSchema = z.object({
-  username: z.string().min(4, {
-    message: "Username must be at least 5 characters.",
-  }),
-  email: z.string().email({
-    message: "Email is required.",
-  }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
+  username: z.string().min(1, "Username is required"),
+  email: z.string().email("Email is invalid"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 
-export default function Page() {
+export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const router = useRouter()
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,22 +41,26 @@ export default function Page() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
-      const response = await axios.post("/api/sign-up", {
-        username: data.username,
-        email: data.email,
-        password: data.password,
-      });
+      const response = await axios.post("/api/register", data);
+      if (!response.data.success) {
+        toast({
+          title: "Failed",
+          description: response.data.message,
+          variant: "destructive",
+        });
+        return;
+      }
       toast({
         title: "Success",
-        description: response.data.message,
+        description: "User created successfully",
       });
-      router.push("/sign-in")
+      router.push("/login");
     } catch (error: any) {
-      console.error(error);
+      console.log(error);
       toast({
         title: "Failed",
-        description: error.response?.data?.message || "Sign up failed",
-        variant : "destructive"
+        description: error.message || "Sign-Up failed",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -79,7 +78,7 @@ export default function Page() {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your name" {...field} />
+                  <Input placeholder="Enter your username" {...field} />
                 </FormControl>
                 <FormMessage>{fieldState.error?.message}</FormMessage>
               </FormItem>
@@ -112,10 +111,18 @@ export default function Page() {
             )}
           />
           <Button disabled={isLoading} type="submit" className="w-full">
-            Submit
+            Sign Up
           </Button>
         </form>
       </Form>
+      <div className="mt-4 text-center">
+        <p>Already have an account?</p>
+        <Link href="/sign-in">
+          <Button variant="link" className="text-blue-500">
+            Log In
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

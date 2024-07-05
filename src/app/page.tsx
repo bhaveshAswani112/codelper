@@ -20,18 +20,12 @@ import { signOut } from "next-auth/react"
 import {Loader2} from "lucide-react"
 
 export default function Page() {
-  const [questions, setQuestions] = useState<Question[]>([])
+
   const { data: session, status } = useSession()
-  const username = session?.user.username
   const router = useRouter()
-
-  if (status === "unauthenticated") {
-    return 
-    <>
-      
-    </>
-  }
-
+  const [questions, setQuestions] = useState<Question[]>([])
+  const username = session?.user.username
+  
   useEffect(() => {
     const getQuestions = async () => {
       const response = await axios.get("/api/get-questions")
@@ -60,9 +54,7 @@ export default function Page() {
             Create Question
           </Button>
           <Button
-            onClick={() => {
-              signOut()
-            }}
+            onClick={() => signOut()}
           >
             Log Out
           </Button>

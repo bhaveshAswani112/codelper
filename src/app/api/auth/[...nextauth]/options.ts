@@ -13,7 +13,7 @@ export const authOptions : NextAuthOptions = {
                 email : {type : "email" , label : "Email" , placeholder : "Enter your email id"},
                 password : {label : "Password" , type:"password",placeholder:"Enter your password"}
             },
-            async authorize(credentials, req) : Promise<any> {
+            async authorize(credentials) : Promise<any> {
                 try {
                     const existing = await prisma.user.findUnique({
                         where : {
@@ -29,8 +29,9 @@ export const authOptions : NextAuthOptions = {
                     }
                     return existing
                 } catch (error) {
-                    console.error(error)
-                    throw new Error("Sign In failed")
+                    // console.error(error)
+                    // @ts-ignore
+                    throw new Error(error?.message || "Sign In failed")
                 }
             },
         })
@@ -54,11 +55,12 @@ export const authOptions : NextAuthOptions = {
             return session
         },
     },
-    pages :  {
-        signIn : "sign-in"
-    },
+    
     session : {
         strategy : "jwt",
+    },
+    pages :  {
+        signIn : "/sign-in"
     },
     secret : process.env.NEXT_AUTH_SECRET,
 }
