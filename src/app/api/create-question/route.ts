@@ -20,6 +20,23 @@ export async function  POST(req : NextRequest){
             })
         }
         const {title, link, difficulty, isDone} : CreateQuestion = await req.json()
+        const existingQuestion = await prisma.question.findFirst({
+            where : {
+                userId : user?.id,
+                OR : [
+                    {title},
+                    {link}
+                ]
+            }
+        })
+        if(existingQuestion){
+            return Response.json({
+                message : "A question already exist with this title or link",
+                success : false
+            },{
+                status : 400
+            })
+        }
         const question = await prisma.question.create({
             data : {
                 title,
