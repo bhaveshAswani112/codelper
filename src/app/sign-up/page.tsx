@@ -41,7 +41,7 @@ export default function RegisterPage() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       setIsLoading(true);
-      const response = await axios.post("/api/register", data);
+      const response = await axios.post("/api/sign-up", data);
       if (!response.data.success) {
         toast({
           title: "Failed",
@@ -54,7 +54,7 @@ export default function RegisterPage() {
         title: "Success",
         description: "User created successfully",
       });
-      router.push("/login");
+      router.push("/sign-in");
     } catch (error: any) {
       console.log(error);
       toast({

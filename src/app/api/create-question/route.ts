@@ -19,13 +19,13 @@ export async function  POST(req : NextRequest){
                 status : 403
             })
         }
-        const { link, difficulty, note , isDone} : CreateQuestion = await req.json()
+        const {title, link, difficulty, isDone} : CreateQuestion = await req.json()
         const question = await prisma.question.create({
             data : {
+                title,
                 link,
                 difficulty,
-                note,
-                isDone,
+                isDone : isDone,
                 userId : user?.id
             }
         })

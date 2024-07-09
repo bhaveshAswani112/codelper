@@ -28,12 +28,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { title } from "process";
+import { Checkbox } from "@/components/ui/checkbox"
 
 const formSchema = z.object({
+  title : z.string({message : "title is required"}),
   link: z.string().url("URL is required"),
   difficulty: z.enum([difficulty.Easy, difficulty.Medium, difficulty.Hard]),
-  note: z.string().optional(),
-  isDone: z.boolean().optional(),
+  isDone: z.boolean(),
 });
 
 export default function Page() {
@@ -43,10 +45,10 @@ export default function Page() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title : "",
       link: "",
       difficulty: difficulty.Easy,
-      note: "",
-      isDone: false,
+      isDone: true,
     },
   });
 
@@ -76,6 +78,19 @@ export default function Page() {
       <h1 className="text-2xl font-bold mb-6 text-center">Create Question</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input placeholder="Give a title to your question" {...field} />
+                </FormControl>
+                <FormMessage>{fieldState.error?.message}</FormMessage>
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="link"
@@ -116,24 +131,16 @@ export default function Page() {
           />
           <FormField
             control={form.control}
-            name="note"
-            render={({ field, fieldState }) => (
-              <FormItem>
-                <FormLabel>Note</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Enter your note" {...field} />
-                </FormControl>
-                <FormMessage>{fieldState.error?.message}</FormMessage>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="isDone"
             render={({ field, fieldState }) => (
               <FormItem className="flex items-center space-x-2">
                 <FormControl>
-                  <Input type="checkbox" {...field} className="w-4 h-4 mt-2" />
+                <div className="flex items-center space-x-2 mt-2">
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+                </div>
                 </FormControl>
                 <FormLabel className="ml-2">Is Done</FormLabel>
                 <FormMessage>{fieldState.error?.message}</FormMessage>
