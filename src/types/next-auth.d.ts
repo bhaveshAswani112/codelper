@@ -1,6 +1,6 @@
 import 'next-auth'
 import { DefaultSession } from 'next-auth'
-import { Question , User } from '@prisma/client'
+import {  Question, User } from '@prisma/client'
 
 
 declare module 'next-auth' {
@@ -9,6 +9,7 @@ declare module 'next-auth' {
         username? : User.username
         email? : User.email
         isVerified? : User.isVerified
+        questions : Question[]
     }
     interface Session {
         user : {
@@ -16,6 +17,7 @@ declare module 'next-auth' {
             username? : User.username
             email? : User.email
             isVerified? : User.isVerified
+            questions : Question[]
         } & DefaultSession['user']
     }
 }
@@ -26,5 +28,6 @@ declare module 'next-auth/jwt' {
         username? : User.username
         email? : User.email
         isVerified? : User.isVerified
+        questions : Question[]
     }
 }

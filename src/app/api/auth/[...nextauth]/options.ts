@@ -18,6 +18,9 @@ export const authOptions : NextAuthOptions = {
                     const existing = await prisma.user.findUnique({
                         where : {
                             email : credentials?.email
+                        },
+                        include: {
+                            questions: true 
                         }
                     })
                     if(!existing || !existing.isVerified){
@@ -43,6 +46,7 @@ export const authOptions : NextAuthOptions = {
                 token.username = user.username
                 token.email = user.email
                 token.isVerified = user.isVerified
+                token.questions = user.questions
             }
             return token
         },
@@ -53,6 +57,7 @@ export const authOptions : NextAuthOptions = {
                 session.user.username = token.username
                 session.user.email = token.email
                 session.user.isVerified = token.isVerified
+                session.user.questions = token.questions
             }
             return session
         },

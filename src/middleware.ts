@@ -12,7 +12,7 @@ export async  function middleware(request: NextRequest) {
 //   console.log(request.headers)
   console.log(process.env.NEXT_AUTH_SECRET)
   const token = await getToken({req : request , secret: process.env.NEXT_AUTH_SECRET})
-  // console.log(token)
+  console.log(token)
   const url = request.nextUrl
 //   console.log(url)
   // console.log(token)
