@@ -48,7 +48,7 @@ export default function Page() {
       title : "",
       link: "",
       difficulty: difficulty.Easy,
-      isDone: true,
+      isDone: false,
     },
   });
 

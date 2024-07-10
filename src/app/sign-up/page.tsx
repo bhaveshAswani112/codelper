@@ -42,6 +42,7 @@ export default function RegisterPage() {
     try {
       setIsLoading(true);
       const response = await axios.post("/api/sign-up", data);
+      
       if (!response.data.success) {
         toast({
           title: "Failed",
@@ -50,11 +51,12 @@ export default function RegisterPage() {
         });
         return;
       }
+      const orderId = response.data.orderId
       toast({
         title: "Success",
-        description: "User created successfully",
+        description: "Enter the otp sent to your email",
       });
-      router.push("/sign-in");
+      router.push(`/verify-user/${data.email}/${orderId}`)
     } catch (error: any) {
       console.log(error);
       toast({

@@ -20,7 +20,7 @@ export const authOptions : NextAuthOptions = {
                             email : credentials?.email
                         }
                     })
-                    if(!existing){
+                    if(!existing || !existing.isVerified){
                         throw new Error("User does not exist")
                     }
                     const check = await bcrypt.compare(credentials?.password || "",existing.password)
@@ -42,6 +42,7 @@ export const authOptions : NextAuthOptions = {
                 token.id = user.id
                 token.username = user.username
                 token.email = user.email
+                token.isVerified = user.isVerified
             }
             return token
         },
@@ -51,6 +52,7 @@ export const authOptions : NextAuthOptions = {
                 session.user.id = token.id
                 session.user.username = token.username
                 session.user.email = token.email
+                session.user.isVerified = token.isVerified
             }
             return session
         },

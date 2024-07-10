@@ -1,17 +1,18 @@
 import { NextRequest } from "next/server";
 import prisma from "../../../../db";
 import bcrypt from "bcryptjs"
+import {  sendOTP } from "@/utils/OTPhelper";
 
 export async function POST(req : NextRequest) {
     try {
         const {username , email , password} = await req.json()
         console.log(username,email,password)
-        const existingUser = await prisma.user.findUnique({
+        let existingUser = await prisma.user.findUnique({
             where : {
                 email
             }
         })
-        if(existingUser){
+        if(existingUser && existingUser.isVerified){
             return Response.json({
                 message : "User already exist",
                 success : false
@@ -19,18 +20,34 @@ export async function POST(req : NextRequest) {
                 status : 400
             })
         }
-
         const hashedPassword = await bcrypt.hash(password,10)
-        const newUser = await prisma.user.create({
-            data : {
-                username,
-                email,
-                password : hashedPassword
-            }
-        })
+        if(existingUser) {
+            existingUser = await prisma.user.update({
+                where : {
+                    id : existingUser?.id
+                },
+                data : {
+                    password : hashedPassword,
+                    username
+                }
+            })
+        }
+        else{
+            const newUser = await prisma.user.create({
+                data : {
+                    username,
+                    email,
+                    password : hashedPassword
+                }
+            })
+        }
+        
+        const response : {orderId : string} = await sendOTP(email)
+        console.log(response)
         return Response.json({
             message : "User created successfully",
-            success : true
+            success : true,
+            orderId : response.orderId
         },{
             status : 200
         })

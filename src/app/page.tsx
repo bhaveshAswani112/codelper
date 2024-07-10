@@ -33,7 +33,10 @@ export default function Page() {
         <CardFooter className="flex justify-between mt-4">
         <Button onClick={() => {
           router.push("/sign-in")
-        }} className="w-full">Login</Button>
+        }} className="">Login</Button>
+        <Button onClick={() => {
+          router.push("/sign-up")
+        }} >Signup</Button>
         </CardFooter>
       </Card>
     </div>

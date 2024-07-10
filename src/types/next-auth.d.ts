@@ -8,12 +8,14 @@ declare module 'next-auth' {
         id? : User.id
         username? : User.username
         email? : User.email
+        isVerified? : User.isVerified
     }
     interface Session {
         user : {
             id? : User.id
             username? : User.username
             email? : User.email
+            isVerified? : User.isVerified
         } & DefaultSession['user']
     }
 }
@@ -23,5 +25,6 @@ declare module 'next-auth/jwt' {
         id? : User.id
         username? : User.username
         email? : User.email
+        isVerified? : User.isVerified
     }
 }

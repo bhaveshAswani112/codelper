@@ -11,7 +11,8 @@ export async function  POST(req : NextRequest){
         const session = await getServerSession(authOptions)
         const user = session?.user
         // console.log(user)
-        if(!session || !user){
+        console.log(user)
+        if(!session || !user || !user.isVerified){
             return Response.json({
                 message : "User is not authorized",
                 success : false
