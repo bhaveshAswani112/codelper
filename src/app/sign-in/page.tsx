@@ -60,7 +60,7 @@ export default function Page() {
         title: "Success",
         description: "Sign in Success",
       });
-      router.push("/");
+      router.push("/dashboard");
     } catch (error: any) {
       console.log(error);
       toast({

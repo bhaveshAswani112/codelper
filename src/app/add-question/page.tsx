@@ -60,7 +60,7 @@ export default function Page() {
         title: "Success",
         description: response?.data?.message,
       });
-      router.push("/");
+      router.push("/dashboard");
     } catch (error: any) {
       console.error(error);
       toast({
