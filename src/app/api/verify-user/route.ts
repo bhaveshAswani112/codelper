@@ -5,9 +5,39 @@ import prisma from "../../../../db";
 
 
 
+import { Ratelimit } from '@upstash/ratelimit';
+import { kv } from '@vercel/kv';
+
+
+// Create a new rateLimit instance
+const rateLimit = new Ratelimit({
+	redis: kv, // Use Vercel KV for storage
+	limiter: Ratelimit.slidingWindow(5, '1m'), 
+});
+
+
+
+
 
 export async function POST(req : NextRequest) {
     try {
+
+        const ip : any = req.headers.get('x-forwarded-for');
+
+        // Check if the user has reached their rate limit
+        const { success } = await rateLimit.limit(`ratelimit_${ip}`);
+
+        if (!success) {
+            return Response.json(
+                {
+                    message: 'Too many requests, please try again later.',
+                },
+                {
+                    status: 429,
+                }
+            );
+        }
+
         const {email,orderId,code} = await req.json()
         // console.log("I am Email ")
         // console.log(email)
