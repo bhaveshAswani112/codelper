@@ -27,9 +27,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { title } from "process";
 import { Checkbox } from "@/components/ui/checkbox"
+import { useSession } from "next-auth/react";
 
 const formSchema = z.object({
   title : z.string({message : "title is required"}),
@@ -39,6 +38,7 @@ const formSchema = z.object({
 });
 
 export default function Page() {
+  const {data : session , update: UpdateSession} = useSession()
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -60,6 +60,7 @@ export default function Page() {
         title: "Success",
         description: response?.data?.message,
       });
+      UpdateSession(session)
       router.push("/dashboard");
     } catch (error: any) {
       console.error(error);

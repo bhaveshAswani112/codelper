@@ -5,6 +5,7 @@ import { NextRequest } from "next/server";
 import CreateQuestion from "@/Schema/CreateQuestion";
 
 
+export const dynamic = 'force-dynamic';
 
 export async function  POST(req : NextRequest){
     try {
@@ -47,7 +48,7 @@ export async function  POST(req : NextRequest){
                 userId : user?.id
             }
         })
-        
+        session.user.questions.push(question);
         return Response.json({
             message : "Question created successfully.",
             success : true

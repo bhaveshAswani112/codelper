@@ -2,14 +2,14 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import prisma from "../../../../db";
 
-
+export const dynamic = 'force-dynamic';
 
 
 export async function GET() {
     try {
         const session = await getServerSession(authOptions)
         const user = session?.user
-        if(!session || !user){
+        if(!session || !user || !user.isVerified){
             return Response.json({
                 message : "user not authorized",
                 success : false
@@ -23,7 +23,7 @@ export async function GET() {
                 userId : user.id
             }
         })
-        console.log(questions)
+        // console.log(questions)
         return Response.json({
             message : "All questions fetched successfully",
             success : true,

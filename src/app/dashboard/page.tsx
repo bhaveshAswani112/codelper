@@ -28,8 +28,7 @@ export default function Page() {
 
   useEffect(() => {
     const getQuestions = async () => {
-      const response = await axios.get("/api/get-questions");
-      //@ts-ignore
+      const response : any = await axios.get("/api/get-questions");
       setQuestions(response.data.questions);
     };
     getQuestions();

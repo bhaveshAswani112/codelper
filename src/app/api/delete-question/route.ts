@@ -3,6 +3,9 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options"
 import { NextRequest } from "next/server"
 import prisma from "../../../../db"
 
+
+export const dynamic = 'force-dynamic';
+
 export async function DELETE(req : NextRequest , {params} : {params : any}) {
     try {
         const session = await getServerSession(authOptions)

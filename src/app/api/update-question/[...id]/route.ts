@@ -2,8 +2,10 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/app/api/auth/[...nextauth]/options"
 import { NextRequest } from "next/server"
 import prisma from "../../../../../db"
-import { useParams } from "next/navigation"
 
+
+
+export const dynamic = 'force-dynamic';
 
 export async function PUT(req:NextRequest,param:any) {
     try {
