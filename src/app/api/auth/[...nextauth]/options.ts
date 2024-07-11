@@ -31,9 +31,7 @@ export const authOptions : NextAuthOptions = {
                         throw new Error("Incorrect password")
                     }
                     return existing
-                } catch (error) {
-                    // console.error(error)
-                    // @ts-ignore
+                } catch (error : any) {
                     throw new Error(error?.message || "Sign In failed")
                 }
             },
