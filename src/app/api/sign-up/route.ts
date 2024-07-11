@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import prisma from "../../../../db";
+import prisma from "@/db/index";
 import bcrypt from "bcryptjs"
 import {  sendOTP } from "@/utils/OTPhelper";
 

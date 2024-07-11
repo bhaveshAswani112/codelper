@@ -1,6 +1,6 @@
 import { verifyOTP } from "@/utils/OTPhelper";
 import { NextRequest } from "next/server";
-import prisma from "../../../../db";
+import prisma from "@/db/index";
 
 
 

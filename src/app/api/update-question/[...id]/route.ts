@@ -1,7 +1,7 @@
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/api/auth/[...nextauth]/options"
-import { NextRequest } from "next/server"
-import prisma from "../../../../../db"
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
+import { NextRequest } from "next/server";
+import prisma from "@/db/index";
 
 
 
