@@ -19,17 +19,26 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { Loader2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Page() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [qstatus,setQStatus] = useState(false)
+  const [qstatus, setQStatus] = useState(false);
   const username = session?.user.username;
 
   useEffect(() => {
     const getQuestions = async () => {
-      const response : any = await axios.get("/api/get-questions");
+      const response: any = await axios.get("/api/get-questions");
       setQuestions(response.data.questions);
     };
     getQuestions();
@@ -38,24 +47,23 @@ export default function Page() {
   const toggleIsDone = async (id: number, currentStatus: boolean) => {
     const updatedStatus = !currentStatus;
     try {
-      setQStatus(true)
+      setQStatus(true);
       await axios.put(`/api/update-question/${id}`, { isDone: updatedStatus });
       setQuestions((prevQuestions) =>
         prevQuestions.map((question) =>
           question.id === id ? { ...question, isDone: updatedStatus } : question
         )
       );
-    } catch (error : any) {
+    } catch (error: any) {
       console.error("Failed to update question status:", error);
       toast({
         title: "Failed",
-        description: error.response.data.message || "Something went wrong while fetching questions",
+        description:
+          error.response.data.message || "Something went wrong while fetching questions",
         variant: "destructive",
-        
-      })
-    }
-    finally{
-      setQStatus(false)
+      });
+    } finally {
+      setQStatus(false);
     }
   };
 
@@ -74,7 +82,7 @@ export default function Page() {
           <h1 className="text-2xl font-bold flex items-center">
             <Badge className="p-2 bg-blue-500 text-white">{username}</Badge>
           </h1>
-          <div>
+          <div className="hidden sm:flex">
             <Button
               className="mr-2 bg-green-500 hover:bg-green-600 text-white"
               onClick={() => router.push("/add-question")}
@@ -87,6 +95,25 @@ export default function Page() {
             >
               Log Out
             </Button>
+          </div>
+          <div className="sm:hidden">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">Menu</Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>Options</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => router.push("/add-question")}>
+                    Add Question
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => signOut()}>
+                    Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
