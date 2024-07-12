@@ -1,7 +1,7 @@
 import { difficulty } from "@prisma/client"
 
 
-export default interface CreateQuestion {
+export interface CreateQuestion {
     title : string
     link : string,
     difficulty : difficulty

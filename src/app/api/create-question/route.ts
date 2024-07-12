@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import prisma from "@/db/index";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { NextRequest } from "next/server";
-import CreateQuestion from "@/Schema/CreateQuestion";
+import {CreateQuestion} from "@/Schema/CreateQuestion";
 
 
 export const dynamic = 'force-dynamic';
