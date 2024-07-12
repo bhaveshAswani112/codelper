@@ -115,7 +115,7 @@ export default function Page() {
               <FormItem>
                 <FormLabel>Difficulty</FormLabel>
                 <FormControl>
-                  <Select {...field}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select the difficulty" />
                     </SelectTrigger>
