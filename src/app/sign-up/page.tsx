@@ -42,7 +42,7 @@ export default function RegisterPage() {
     try {
       setIsLoading(true);
       const response = await axios.post("/api/sign-up", data);
-      
+      console.log(response)
       if (!response.data.success) {
         toast({
           title: "Failed",
@@ -61,7 +61,7 @@ export default function RegisterPage() {
       console.log(error);
       toast({
         title: "Failed",
-        description: error.message || "Sign-Up failed",
+        description: error.response.data.message || "Sign-Up failed",
         variant: "destructive",
       });
     } finally {

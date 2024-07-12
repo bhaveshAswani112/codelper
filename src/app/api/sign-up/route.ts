@@ -6,12 +6,14 @@ import {  sendOTP } from "@/utils/OTPhelper";
 export async function POST(req : NextRequest) {
     try {
         const {username , email , password} = await req.json()
-        console.log(username,email,password)
+        // console.log(username,email,password)
         let existingUser = await prisma.user.findUnique({
             where : {
                 email
             }
         })
+        // console.log("I am existing")
+        // console.log(existingUser)
         if(existingUser && existingUser.isVerified){
             return Response.json({
                 message : "User already exist",
@@ -20,6 +22,7 @@ export async function POST(req : NextRequest) {
                 status : 400
             })
         }
+        // console.log("Not verified existing user")
         const hashedPassword = await bcrypt.hash(password,10)
         if(existingUser) {
             existingUser = await prisma.user.update({
@@ -32,6 +35,7 @@ export async function POST(req : NextRequest) {
                 }
             })
         }
+
         else{
             const newUser = await prisma.user.create({
                 data : {

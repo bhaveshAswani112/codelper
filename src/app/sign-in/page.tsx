@@ -65,7 +65,7 @@ export default function Page() {
       console.log(error);
       toast({
         title: "Failed",
-        description: error.message || "Sign in failed",
+        description: error.response.data.message || "Sign in failed",
         variant: "destructive",
       });
     } finally {

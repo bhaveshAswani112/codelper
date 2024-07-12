@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { Loader2 } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -44,8 +45,14 @@ export default function Page() {
           question.id === id ? { ...question, isDone: updatedStatus } : question
         )
       );
-    } catch (error) {
+    } catch (error : any) {
       console.error("Failed to update question status:", error);
+      toast({
+        title: "Failed",
+        description: error.response.data.message || "Something went wrong while fetching questions",
+        variant: "destructive",
+        
+      })
     }
     finally{
       setQStatus(false)
