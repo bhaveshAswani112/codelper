@@ -2,8 +2,13 @@ import { getServerSession } from "next-auth";
 import prisma from "@/db/index";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { NextRequest } from "next/server";
-import { difficulty } from "@prisma/client"
 
+
+enum difficulty {
+    Easy = "Easy",
+    Medium = "Medium",
+    Hard = "Hard",
+  }
 
 
 
