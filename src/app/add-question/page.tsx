@@ -17,6 +17,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { difficulty } from "@prisma/client";
 import {
   Select,
   SelectContent,
@@ -30,11 +31,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useSession } from "next-auth/react";
 
 
-enum difficulty {
-  Easy = "Easy",
-  Medium = "Medium",
-  Hard = "Hard",
-}
+
 
 const formSchema = z.object({
   title : z.string({message : "title is required"}),
