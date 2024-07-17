@@ -28,6 +28,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -80,7 +81,13 @@ export default function Page() {
       <div className="container mx-auto p-4 bg-white rounded-lg shadow-lg">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold flex items-center">
-            <Badge className="p-2 bg-blue-500 text-white">{username}</Badge>
+            
+            
+            <Badge onClick={() => {
+              router.push("/profile")
+            }} className="p-2 bg-blue-500 text-white">{username}</Badge>
+          
+            
           </h1>
           <div className="hidden sm:flex">
             <Button
