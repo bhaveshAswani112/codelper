@@ -28,7 +28,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
+
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -75,6 +75,53 @@ export default function Page() {
       </div>
     );
   }
+
+  const getLogo = (link: string) => {
+    const updatedLink = link.toLowerCase();
+    
+    if (updatedLink.includes("leetcode")) {
+      return (
+        <img 
+          src="/images/leetcode-logo.png" 
+          alt="LeetCode Logo" 
+          className="w-6 h-6"
+        />
+      );
+    } else if (updatedLink.includes("geeks")) {
+      return (
+        <img 
+          src="/images/gfg-logo.jpeg" 
+          alt="GeeksforGeeks Logo" 
+          className="w-6 h-6"
+        />
+      );
+    } else if (updatedLink.includes("codechef")) {
+      return (
+        <img 
+          src="/images/codechef-logo.png" 
+          alt="CodeChef Logo" 
+          className="w-6 h-6"
+        />
+      );
+    } else if (updatedLink.includes("codeforces")) {
+      return (
+        <img 
+          src="/images/codeforces-logo.png" 
+          alt="Codeforces Logo" 
+          className="w-6 h-6"
+        />
+      );
+    }
+    
+    return (
+      <img 
+        src="/images/default.jpeg" 
+        alt="Codeforces Logo" 
+        className="w-6 h-6"
+      />
+    );;
+  };
+  
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -147,7 +194,7 @@ export default function Page() {
                       rel="noopener noreferrer"
                       className="text-blue-500 hover:underline"
                     >
-                      {question.link}
+                      {getLogo(question.link)}
                     </a>
                   </TableCell>
                   <TableCell>{question.title}</TableCell>
