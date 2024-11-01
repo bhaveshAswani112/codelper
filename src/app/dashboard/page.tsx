@@ -114,7 +114,7 @@ export default function Page() {
     
     return (
       <img 
-        src="/images/default.jpeg" 
+        src="/images/default.jpg" 
         alt="Codeforces Logo" 
         className="w-6 h-6"
       />
