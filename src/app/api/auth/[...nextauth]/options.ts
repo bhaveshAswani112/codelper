@@ -1,4 +1,4 @@
-import { NextAuthOptions, User } from "next-auth";
+import { NextAuthOptions, SessionStrategy, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import prisma from "@/db/index";
@@ -35,8 +35,13 @@ export const authOptions : NextAuthOptions = {
                     throw new Error(error?.message || "Sign In failed")
                 }
             },
-        })
+            
+        }),
     ],
+    jwt : {
+        maxAge : 1*24*60*60
+    },
+    useSecureCookies : true,
     callbacks : {
         async jwt({ token , user}) {
             if(user){
@@ -62,10 +67,12 @@ export const authOptions : NextAuthOptions = {
     },
     
     session : {
-        strategy : "jwt",
+        strategy : "jwt" as SessionStrategy,
+        maxAge : 1*24*60*60
     },
     pages :  {
         signIn : "/sign-in"
     },
     secret : process.env.NEXT_AUTH_SECRET,
+    
 }
